@@ -37,7 +37,7 @@ def get_user_preferences(name):
     year_choice_end = int(input("Enter the end year: "))
 
     #Asking user for rating
-    rating_choice = float(input("Enter the average rating of the film: "))
+    rating_choice = float(input("Enter the average rating of the film (from 1-10): "))
 
     #preferences are stored and eventually given to the API(?)
     preferences = {
