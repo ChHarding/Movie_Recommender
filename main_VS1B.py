@@ -25,7 +25,7 @@ genres = {
 
 #Below I am defining get_user_preferences to ask for genre, rating, and year
 #Building preferences (base) - block
-user_name = input("Enter your name: ")
+#user_name = input("Enter your name: ")
 def get_user_preferences(name):
     print (f"Hello {name}, welcome to Movie Recommender")
 
@@ -48,7 +48,7 @@ def get_user_preferences(name):
     }
     return preferences
 
-preferences = get_user_preferences(user_name)
+#preferences = get_user_preferences(user_name)
 
 #Searching the api based on user preferences - below I used part of the code example generated from feedback from my light spec? Hopefully it works. 
 from keys import tmdb_api
@@ -79,7 +79,7 @@ def search_tmdb(preferences):
     response.raise_for_status()
     return response.json()
     
-movies = search_tmdb(preferences)["results"]
+#movies = search_tmdb(preferences)["results"]
 
 #Third block below, using the pulled information from user preferences and the API search to filter out unrelated movies.
 def filter_movies(movies, preferences):
@@ -119,4 +119,4 @@ def display_movies(sorted_movies):
     for movie in sorted_movies:
         print(f'{movie["title"]} - rating {movie["vote_average"]} - released {movie.get("release_date", "unknown")}')
 
-display_movies(sort_movies(filter_movies(movies, preferences)))
+#display_movies(sort_movies(filter_movies(movies, preferences)))
