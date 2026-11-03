@@ -1,6 +1,6 @@
 ﻿#working on streamlit interface 
 import streamlit as st
-#importing the movie recommender code I wrote for Vs 1 B
+#importing the movie recommender code I wrote for Vs 1 B - just so I don't make easy mistakes in re-coding.
 import main_VS1B as mr
 
 #streamlit app
@@ -61,10 +61,10 @@ if st.button("Find Movies"):
                 poster_url = "https://image.tmdb.org/t/p/w500/" + movie["poster_path"]
                 print(f"Standard Poster (w500): {poster_url}")
                 st.image(poster_url)
+        else:
+            print("No poster available")
     else:
-        print("No poster available")
-else:
-    st.warning("No movies found. Try changing your preferences.")
+        st.warning("No movies found. Try changing your preferences.")
 
 
 
