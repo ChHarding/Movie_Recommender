@@ -52,17 +52,25 @@ if st.button("Find Movies"):
     if filtered:
         #I decided to only show the top 5 choices? Otherwise with all the images the output gets very long... 
         recs = mr.sort_movies(filtered)
-        top_five = recs[:5]
+        count = 0
 
-        for movie in top_five:
-            st.write(movie["title"], movie["vote_average"])
+        for movie in recs:
             #getting the TMDB posters. I used this website to help format https://developer.themoviedb.org/docs/image-basics)
+            if movie.get("vote_count", 0) <= 50:
+                    continue
+            st.write(movie["title"], movie["vote_average"])
             if poster_path:
-                poster_url = "https://image.tmdb.org/t/p/w500/" + movie["poster_path"]
-                print(f"Standard Poster (w500): {poster_url}")
+                poster_url = "https://image.tmdb.org/t/p/w154" + movie["poster_path"]
+                print(f"Thumbsize Poster (w154): {poster_url}\nRatings: {movie.get('vote_count', 0):,}")
                 st.image(poster_url)
-        else:
-            print("No poster available")
+                st.caption(f"Number of Ratings: {movie.get('vote_count', 0):,}")
+            else:
+                print("No poster available")
+            count += 1
+            if count == 5:
+                break
+        if count == 0:
+            st.warning("No movies found with minimum of 50 ratings")
     else:
         st.warning("No movies found. Try changing your preferences.")
 
