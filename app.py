@@ -1,11 +1,16 @@
 ﻿#working on streamlit interface 
 import streamlit as st
 #importing the movie recommender code I wrote for Vs 1 B - just so I don't make easy mistakes in re-coding.
-import main_VS1B as mr
+import main as mr
 
 #streamlit app
+#adding "now showing" image
+st.image(
+    "images/now_showing_2.jpg",
+    width=600)
+
 st.title("Welcome to Movie Recommender")
-st.set_page_config(layout = "wide")
+st.set_page_config(layout = "wide", page_icon= "🎬")
 st.write("Finally know what to watch!")
 
 #user selects genre
@@ -53,22 +58,37 @@ if st.button("Find Movies"):
         #I decided to only show the top 5 choices? Otherwise with all the images the output gets very long... 
         recs = mr.sort_movies(filtered)
         count = 0
+        cols = st.columns(5)
 
         for movie in recs:
             #getting the TMDB posters. I used this website to help format https://developer.themoviedb.org/docs/image-basics)
             if movie.get("vote_count", 0) <= 50:
                     continue
-            st.write(movie["title"], movie["vote_average"])
-            if poster_path:
-                poster_url = "https://image.tmdb.org/t/p/w154" + movie["poster_path"]
-                print(f"Thumbsize Poster (w154): {poster_url}\nRatings: {movie.get('vote_count', 0):,}")
-                st.image(poster_url)
-                st.caption(f"Number of Ratings: {movie.get('vote_count', 0):,}")
-            else:
-                print("No poster available")
-            count += 1
             if count == 5:
                 break
+
+            with cols[count]:
+                st.write(movie["title"], movie["vote_average"])
+                st.write(f"⭐ {movie['vote_average']}/10")
+                poster_path = movie.get("poster_path")
+
+                if poster_path:
+                    poster_url = "https://image.tmdb.org/t/p/w154" + movie["poster_path"]
+                    print(f"Thumbsize Poster (w154): {poster_url}\nRatings: {movie.get('vote_count', 0):,}")
+                    st.image(poster_url)
+                    st.caption(f"Number of Ratings: {movie.get('vote_count', 0):,}")
+                else:
+                    st.write("No poster available")
+
+                movie_id = movie["id"]
+                details = mr.get_movie_details(movie_id)
+                st.write("Title:", details["title"])
+                st.write("Release date:", details["release_date"])
+                st.write("Description:", details["overview"])
+                st.write("How long is the movie?:", details["runtime"], "minutes")
+                
+            count += 1
+
         if count == 0:
             st.warning("No movies found with minimum of 50 ratings")
     else:
